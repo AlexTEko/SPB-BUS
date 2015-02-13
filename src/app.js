@@ -3,8 +3,8 @@ var ajax = require('ajax');
 var Vibe = require('ui/vibe');
 
 var user_id = "100";
-//var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
-var api = 'http://spbbus.pebblenow.ru/api.php'; //work api
+var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
+//var api = 'http://spbbus.pebblenow.ru/api.php'; //work api
 
 var parseTrans = function(data, quantity) {
   var items = [];

@@ -13,24 +13,6 @@ var locationOptions = {
 };
 //======================================================================================================================
 //===================================================UI=================================================================
-var card = new UI.Card({
-  title:'Wait',
-  subtitle:'Working...'
-});
-
-var addtof = new UI.Card({
-  title:'Added to favorites'
-});
-
-addtof.on('click', 'select', function() {
-  addtof.hide();
-});
-
-var gpscard = new UI.Card({
-  title:'Wait',
-  subtitle:'Finding your location...'
-});
-
 var menuItems = [
   {
     title: "Go",
@@ -48,36 +30,6 @@ var mainMenu = new UI.Menu({
 ]
 });
 
-mainMenu.on('select', function(e) {
-  console.log('Select:' + e.itemIndex);
-  switch(e.itemIndex) {
-      case 0:
-          gpscard.show();
-          navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
-          break;
-      case 1:
-//           var key = 5;
-//           var value = 'Some string';
-
-//           localStorage.setItem(key, value);
-//           var value = localStorage.getItem(key);
-          
-          break;
-  }
-});
-
-mainMenu.on('longSelect', function(e) {
-  console.log('longSelect:' + e.itemIndex);
-});
-
-localStorage.clear();
-
-//localStorage.setItem("favoriteIds", favoriteIds);
-
-// localStorage.setItem(22, JSON.stringify({id:22, title:"22", subtitle:"Торжковский рынок"}));
-// localStorage.setItem(33, JSON.stringify({ id:33, title:"33", subtitle:"Новосибирская"}));
-// localStorage.setItem(44, JSON.stringify({ id:44, title:"44", subtitle:"Черная Речка"}));
-
 var updateFavorites = function() {
   var favoriteItems = [];
   //console.log("Length = " + favoriteIds.length);
@@ -91,6 +43,65 @@ var updateFavorites = function() {
   }
   mainMenu.items(1,  favoriteItems);
 };
+
+var card = new UI.Card({
+  title:'Wait',
+  subtitle:'Working...'
+});
+
+var addtof = new UI.Card({
+  title:'Added to favorites'
+});
+
+addtof.on('click', 'back', function() {
+  updateFavorites();
+  addtof.hide();
+});
+
+var remfromf = new UI.Card({
+  title:'Removed from favorites'
+});
+
+remfromf.on('click', 'back', function() {
+  updateFavorites();
+  remfromf.hide();
+});
+
+var gpscard = new UI.Card({
+  title:'Wait',
+  subtitle:'Finding your location...'
+});
+
+mainMenu.on('select', function(e) {
+  //console.log('Select item:' + e.itemIndex);
+  //console.log('Select section:' + e.sectionIndex);
+  if (e.sectionIndex === 0) {
+          gpscard.show();
+          navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
+  }
+  else {
+    //console.log('Stop item id:' + e.item.id);
+      var stopid = e.item.id;
+      card.show();
+      get_stop(stopid);
+  }
+});
+
+mainMenu.on('longSelect', function(e) {
+  if (e.sectionIndex === 1) {
+    console.log('Remove item stop:' + e.item.id);
+    var favoriteIds = JSON.parse(localStorage.getItem("favoriteIds"));
+    if (favoriteIds !== null) {
+      var index = favoriteIds.indexOf(e.item.id);
+      if (index > -1) {
+        favoriteIds.splice(index, 1);
+      }
+      localStorage.setItem("favoriteIds", JSON.stringify(favoriteIds));
+      localStorage.removeItem(e.item.id);
+      remfromf.show();
+    }
+  }
+});
 
 updateFavorites();
 mainMenu.show();
@@ -160,8 +171,11 @@ function get_nearest_stops(lat, lon) {
       menuStops.on('longSelect', function(e) {
         //var stopid = e.item.id;
         var favoriteIds = JSON.parse(localStorage.getItem(("favoriteIds")));
-        if (favoriteIds !== null)
-          favoriteIds.push(e.item.id);
+        if (favoriteIds !== null) {
+          var index = favoriteIds.indexOf(e.item.id);
+          if (index < 0)
+            favoriteIds.push(e.item.id);
+        }
         else {
           favoriteIds = [];
           favoriteIds.push(e.item.id);
@@ -169,7 +183,6 @@ function get_nearest_stops(lat, lon) {
         localStorage.setItem("favoriteIds", JSON.stringify(favoriteIds));
         localStorage.setItem(e.item.id, JSON.stringify({id:e.item.id, title:e.item.title, subtitle:e.item.subtitle}));
         console.log("Save item " + e.item.id + ": "+ e.item.title + " " + e.item.subtitle);
-        updateFavorites();
         addtof.show();
       });
     },

@@ -3,8 +3,8 @@ var Vibe = require('ui/vibe');
 var ajax = require('ajax');
 //===============================================CONFIG=================================================================
 var user_id = "100";
-//var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
-var api = 'http://spbbus.pebblenow.ru/api.php'; //work api
+var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
+//var api = 'http://spbbus.pebblenow.ru/api_test.php'; //work api
 
 var locationOptions = {
   enableHighAccuracy: true, 
@@ -16,6 +16,14 @@ var locationOptions = {
 var card = new UI.Card({
   title:'Wait',
   subtitle:'Working...'
+});
+
+var addtof = new UI.Card({
+  title:'Added to favorites'
+});
+
+addtof.on('click', 'select', function() {
+  addtof.hide();
 });
 
 var gpscard = new UI.Card({
@@ -62,21 +70,29 @@ mainMenu.on('longSelect', function(e) {
   console.log('longSelect:' + e.itemIndex);
 });
 
+localStorage.clear();
 
-// var favoriteIds = [22,33,44];
-// localStorage.setItem(0, favoriteIds);
+//localStorage.setItem("favoriteIds", favoriteIds);
 
-// localStorage.setItem(22,  JSON.stringify({id:22, title:"22", subtitle:"Торжковский рынок"}));
-// //localStorage.setItem(33, { id:22, title:"22", subtitle:"Новосибирская"});
-// //localStorage.setItem(44, { id:22, title:"22", subtitle:"Черная Речка"});
+// localStorage.setItem(22, JSON.stringify({id:22, title:"22", subtitle:"Торжковский рынок"}));
+// localStorage.setItem(33, JSON.stringify({ id:33, title:"33", subtitle:"Новосибирская"}));
+// localStorage.setItem(44, JSON.stringify({ id:44, title:"44", subtitle:"Черная Речка"}));
 
-// var favoriteItems = [];
-// for (var i = 0; i<favoriteIds.length; i++) {
-//   favoriteItems.push(JSON.parse(localStorage.getItem(favoriteIds[i])));
-//   console.log(JSON.parse(localStorage.getItem(favoriteIds[i])));
-// }
+var updateFavorites = function() {
+  var favoriteItems = [];
+  //console.log("Length = " + favoriteIds.length);
+  var favoriteIds = JSON.parse(localStorage.getItem("favoriteIds"));
+  if (favoriteIds !== null) {
+    for (var i = 0; i<favoriteIds.length; i++) {
+      favoriteItems.push(JSON.parse(localStorage.getItem(favoriteIds[i])));
+      console.log("Item #" + favoriteIds[i] + " is: " + JSON.parse(localStorage.getItem(favoriteIds[i])));
+      console.log(favoriteItems[favoriteIds[i]]);
+    }
+  }
+  mainMenu.items(1,  favoriteItems);
+};
 
-// mainMenu.items(1,  favoriteItems);
+updateFavorites();
 mainMenu.show();
 //Accel.init();
 //======================================================================================================================
@@ -110,8 +126,8 @@ var parseStops = function(data, quantity) {
     var distance = data.stops[i].distance;
     items.push({
       id:id,
-      title:type + ' ' + Math.round(distance) + 'm',
-      subtitle:name
+      title:name,
+      subtitle:type + ' ' + Math.round(distance) + 'm'
     });
   }
   return items;
@@ -140,6 +156,21 @@ function get_nearest_stops(lat, lon) {
         var stopid = e.item.id;
         card.show();
         get_stop(stopid);
+      });
+      menuStops.on('longSelect', function(e) {
+        //var stopid = e.item.id;
+        var favoriteIds = JSON.parse(localStorage.getItem(("favoriteIds")));
+        if (favoriteIds !== null)
+          favoriteIds.push(e.item.id);
+        else {
+          favoriteIds = [];
+          favoriteIds.push(e.item.id);
+        }
+        localStorage.setItem("favoriteIds", JSON.stringify(favoriteIds));
+        localStorage.setItem(e.item.id, JSON.stringify({id:e.item.id, title:e.item.title, subtitle:e.item.subtitle}));
+        console.log("Save item " + e.item.id + ": "+ e.item.title + " " + e.item.subtitle);
+        updateFavorites();
+        addtof.show();
       });
     },
     function(error) {

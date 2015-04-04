@@ -37,8 +37,8 @@ var updateFavorites = function() {
   if (favoriteIds !== null) {
     for (var i = 0; i<favoriteIds.length; i++) {
       favoriteItems.push(JSON.parse(localStorage.getItem(favoriteIds[i])));
-      console.log("Item #" + favoriteIds[i] + " is: " + JSON.parse(localStorage.getItem(favoriteIds[i])));
-      console.log(favoriteItems[favoriteIds[i]]);
+      //console.log("Item #" + favoriteIds[i] + " is: " + JSON.parse(localStorage.getItem(favoriteIds[i])));
+     // console.log(favoriteItems[favoriteIds[i]]);
     }
   }
   mainMenu.items(1,  favoriteItems);
@@ -89,7 +89,7 @@ mainMenu.on('select', function(e) {
 
 mainMenu.on('longSelect', function(e) {
   if (e.sectionIndex === 1) {
-    console.log('Remove item stop:' + e.item.id);
+    //console.log('Remove item stop:' + e.item.id);
     var favoriteIds = JSON.parse(localStorage.getItem("favoriteIds"));
     if (favoriteIds !== null) {
       var index = favoriteIds.indexOf(e.item.id);
@@ -182,13 +182,13 @@ function get_nearest_stops(lat, lon) {
         }
         localStorage.setItem("favoriteIds", JSON.stringify(favoriteIds));
         localStorage.setItem(e.item.id, JSON.stringify({id:e.item.id, title:e.item.title, subtitle:e.item.subtitle}));
-        console.log("Save item " + e.item.id + ": "+ e.item.title + " " + e.item.subtitle);
+       // console.log("Save item " + e.item.id + ": "+ e.item.title + " " + e.item.subtitle);
         addtof.show();
       });
     },
     function(error) {
       card.hide();
-      console.log('Download failed: ' + error);
+   //   console.log('Download failed: ' + error);
     }
   );
 }
@@ -214,7 +214,7 @@ function get_stop(stopid) {
         },
         function(error) {
           card.hide();
-          console.log('Download failed: ' + error);
+     //     console.log('Download failed: ' + error);
         }
       );
 }

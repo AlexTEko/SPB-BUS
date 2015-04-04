@@ -59,7 +59,7 @@
     "shortName": "SPB BUS",
     "uuid": "4b51821b-67fb-4cd3-9c03-043966049214",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": false
     }

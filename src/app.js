@@ -1,7 +1,7 @@
 var UI = require('ui');
 var Vibe = require('ui/vibe');
 var ajax = require('ajax');
-var Accel = require('ui/accel');
+//var Accel = require('ui/accel');
 //===============================================CONFIG=================================================================
 var user_id = "120";
 //var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
@@ -108,7 +108,7 @@ mainMenu.on('longSelect', function(e) {
 
 updateFavorites();
 mainMenu.show();
-Accel.init();
+//Accel.init();
 //======================================================================================================================
 //===============================================LOGIC==================================================================
 

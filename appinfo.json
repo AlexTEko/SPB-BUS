@@ -29,8 +29,18 @@
                 "type": "font"
             },
             {
+                "file": "images/update.png",
+                "name": "IMAGES_UPDATE_PNG",
+                "type": "png"
+            },
+            {
                 "file": "images/remove.png",
                 "name": "IMAGES_REMOVE_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/location.png",
+                "name": "IMAGES_LOCATION_PNG",
                 "type": "png"
             },
             {

@@ -1,10 +1,11 @@
 var UI = require('ui');
 var Vibe = require('ui/vibe');
 var ajax = require('ajax');
+var Accel = require('ui/accel');
 //===============================================CONFIG=================================================================
-var user_id = "100";
-var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
-//var api = 'http://spbbus.pebblenow.ru/api_test.php'; //work api
+var user_id = "120";
+//var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
+var api = 'http://spbbus.pebblenow.ru/api.php'; //work api
 
 var locationOptions = {
   enableHighAccuracy: true, 
@@ -45,8 +46,9 @@ var updateFavorites = function() {
 };
 
 var card = new UI.Card({
-  title:'Wait',
-  subtitle:'Working...'
+ // title:'Wait',
+ // subtitle:'Working...'
+  banner: 'images/update.png'
 });
 
 var addtof = new UI.Card({
@@ -68,8 +70,9 @@ remfromf.on('click', 'back', function() {
 });
 
 var gpscard = new UI.Card({
-  title:'Wait',
-  subtitle:'Finding your location...'
+  //title:'Wait',
+  //subtitle:'Finding your location...'
+  banner: 'images/location.png'
 });
 
 mainMenu.on('select', function(e) {
@@ -105,7 +108,7 @@ mainMenu.on('longSelect', function(e) {
 
 updateFavorites();
 mainMenu.show();
-//Accel.init();
+Accel.init();
 //======================================================================================================================
 //===============================================LOGIC==================================================================
 
@@ -207,6 +210,20 @@ function get_stop(stopid) {
                 title: 'Arriving transport',
                 items: itemsTrans
               }]
+            });
+            menuTrans.on('longSelect', function(e) {
+              card.show();
+              ajax(
+                {
+                  url: api + '?stopid=' + stopid,
+                  type:'json'
+                },
+                function(data) {
+                  itemsTrans = parseTrans(data, data.count);
+                  menuTrans.items(0,itemsTrans);
+                  Vibe.vibrate('short');
+                  card.hide();
+                });
             });
             menuTrans.show();
             card.hide();

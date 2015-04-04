@@ -29,6 +29,26 @@
                 "type": "font"
             },
             {
+                "file": "images/update.png",
+                "name": "IMAGES_UPDATE_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/remove.png",
+                "name": "IMAGES_REMOVE_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/location.png",
+                "name": "IMAGES_LOCATION_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/add.png",
+                "name": "IMAGES_ADD_PNG",
+                "type": "png"
+            },
+            {
                 "file": "images/icon.png",
                 "menuIcon": true,
                 "name": "IMAGES_ICON_PNG",
@@ -39,7 +59,7 @@
     "shortName": "SPB BUS",
     "uuid": "4b51821b-67fb-4cd3-9c03-043966049214",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": false
     }

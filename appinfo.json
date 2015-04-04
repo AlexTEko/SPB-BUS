@@ -29,6 +29,16 @@
                 "type": "font"
             },
             {
+                "file": "images/remove.png",
+                "name": "IMAGES_REMOVE_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/add.png",
+                "name": "IMAGES_ADD_PNG",
+                "type": "png"
+            },
+            {
                 "file": "images/icon.png",
                 "menuIcon": true,
                 "name": "IMAGES_ICON_PNG",

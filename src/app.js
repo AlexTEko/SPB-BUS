@@ -15,7 +15,7 @@ var locationOptions = {
 //===================================================UI=================================================================
 var menuItems = [
   {
-    title: "Go",
+    title: "Use my Location",
     subtitle: "Find nearest stops!"
   },
 ];
@@ -50,7 +50,7 @@ var card = new UI.Card({
 });
 
 var addtof = new UI.Card({
-  title:'Added to favorites'
+  banner: 'images/add.png'
 });
 
 addtof.on('click', 'back', function() {
@@ -59,7 +59,7 @@ addtof.on('click', 'back', function() {
 });
 
 var remfromf = new UI.Card({
-  title:'Removed from favorites'
+  banner: 'images/remove.png'
 });
 
 remfromf.on('click', 'back', function() {

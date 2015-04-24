@@ -3,7 +3,7 @@ var Vibe = require('ui/vibe');
 var ajax = require('ajax');
 var Settings = require('settings');
 //===============================================CONFIG=================================================================
-var user_id = "120";
+var user_id = "121";
 //var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
 var api = 'http://spbbus.pebblenow.ru/api.php'; //work api
 

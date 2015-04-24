@@ -21,9 +21,16 @@ var menuItems = [
   },
 ];
 
+var remfromf = new UI.Card({
+  banner: 'images/remove.png'
+});
+
+var gpscard = new UI.Card({
+  banner: 'images/location.png'
+});
+
 var mainMenu = new UI.Menu({
   sections: [{
-    title: 'SPB BUS',
     items: menuItems
   },{
     title: 'Favorite stops' 
@@ -31,8 +38,26 @@ var mainMenu = new UI.Menu({
 ]
 });
 
-mainMenu.on('click','back',function() {
-  mainMenu.hide();
+var card = new UI.Card({
+  banner: 'images/update.png'
+});
+
+var addtof = new UI.Card({
+  banner: 'images/add.png'
+});
+
+var menuStops = new UI.Menu({
+  sections: [{
+    title: 'Nearest stops',
+    items: []
+  }]
+});
+
+var menuTrans = new UI.Menu({
+  sections: [{
+    title: 'Arriving transport',
+    items: []
+  }]
 });
 
 var updateFavorites = function() {
@@ -46,40 +71,8 @@ var updateFavorites = function() {
   mainMenu.items(1,  favoriteItems);
 };
 
-var card = new UI.Card({
-  banner: 'images/update.png'
-});
-
-var addtof = new UI.Card({
-  banner: 'images/add.png'
-});
-
-addtof.on('click', 'back', function() {
-  updateFavorites();
-  addtof.hide();
-});
-
-addtof.on('click', 'select', function() {
-  updateFavorites();
-  addtof.hide();
-});
-
-var remfromf = new UI.Card({
-  banner: 'images/remove.png'
-});
-
-remfromf.on('click', 'back', function() {
-  updateFavorites();
-  remfromf.hide();
-});
-
-remfromf.on('click', 'select', function() {
-  updateFavorites();
-  remfromf.hide();
-});
-
-var gpscard = new UI.Card({
-  banner: 'images/location.png'
+mainMenu.on('click','back',function() {
+  mainMenu.hide();
 });
 
 mainMenu.on('select', function(e) {
@@ -88,7 +81,6 @@ mainMenu.on('select', function(e) {
           navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
   }
   else {
-      card.show();
       get_stop(e.item.id);
   }
 });
@@ -108,15 +100,28 @@ mainMenu.on('longSelect', function(e) {
   }
 });
 
-var menuStops = new UI.Menu({
-  sections: [{
-    title: 'Nearest stops',
-    items: []
-  }]
-});   
+remfromf.on('click', 'back', function() {
+  updateFavorites();
+  remfromf.hide();
+});
+
+remfromf.on('click', 'select', function() {
+  updateFavorites();
+  remfromf.hide();
+});
+
+
+addtof.on('click', 'back', function() {
+  updateFavorites();
+  addtof.hide();
+});
+
+addtof.on('click', 'select', function() {
+  updateFavorites();
+  addtof.hide();
+});
 
 menuStops.on('select', function(e) {
-  card.show();
   get_stop(e.item.id);
 });
 
@@ -138,13 +143,6 @@ menuStops.on('longSelect', function(e) {
   localStorage.setItem("favoriteIds", JSON.stringify(favoriteIds));
   localStorage.setItem(e.item.id, JSON.stringify({id:e.item.id, title:e.item.title, subtitle:e.item.subtitle}));
   addtof.show();
-});
-
-var menuTrans = new UI.Menu({
-  sections: [{
-    title: 'Arriving transport',
-    items: []
-  }]
 });
 
 menuTrans.on('click','back',function() {
@@ -218,22 +216,22 @@ function get_stop(stopid) {
     Settings.data('stopid', stopid);
   else
     stopid = Settings.data('stopid');
-    card.show();
-    ajax(
-      {
-        url: api + '?stopid=' + stopid + '&user_id=' + user_id,
-        type:'json'
-      },
-      function(data) {
-        menuTrans.items(0,parseTrans(data, data.count));
-        menuTrans.show();
-        card.hide();
-        Vibe.vibrate('short');
-      },
-      function(error) {
-        card.hide();
-      }
-    );
+  card.show();
+  ajax(
+    {
+      url: api + '?stopid=' + stopid + '&user_id=' + user_id,
+      type:'json'
+    },
+    function(data) {
+      menuTrans.items(0,parseTrans(data, data.count));
+      menuTrans.show();
+      card.hide();
+      Vibe.vibrate('short');
+    },
+    function(error) {
+      card.hide();
+    }
+  );
 }
 //Get coordinates successfully
 function locationSuccess(pos) {

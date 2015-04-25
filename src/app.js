@@ -4,8 +4,8 @@ var ajax = require('ajax');
 var Settings = require('settings');
 //===============================================CONFIG=================================================================
 var user_id = "121";
-//var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
-var api = 'http://spbbus.pebblenow.ru/api.php'; //work api
+var api = 'http://spbbus.pebblenow.ru/api_test.php'; //test api
+//var api = 'http://spbbus.pebblenow.ru/api.php'; //work api
 
 var locationOptions = {
   enableHighAccuracy: true, 
@@ -29,11 +29,11 @@ var gpscard = new UI.Card({
   banner: 'images/location.png'
 });
 
-var mainMenu = new UI.Menu({
+var mainMenu = new UI.Menu({ 
   sections: [{
     items: menuItems
   },{
-    title: 'Favorite stops' 
+    title: 'Favorite stops', 
   }
 ]
 });
@@ -153,6 +153,10 @@ menuTrans.on('longSelect', function(e) {
   get_stop();
 });
 
+menuTrans.on('select', function(e) {
+  console.log(e.item.direction);
+});
+
 updateFavorites();
 mainMenu.show();
 //======================================================================================================================
@@ -165,10 +169,13 @@ var parseTrans = function(data, quantity) {
     var id = data.trans[i].id;
     var number = data.trans[i].number;
     var remain = data.trans[i].remain;
+    var direction = data.trans[i].direction;
+    var end = data.trans[i].end;
     items.push({
       id:id,
-      title:number,
-      subtitle:remain
+      title:number + ' (' + remain + ')',
+      subtitle: '->' + end,
+      direction: direction
     });
   }
   return items;

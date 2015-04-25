@@ -29,6 +29,11 @@
                 "type": "font"
             },
             {
+                "file": "images/+.png",
+                "name": "IMAGES___PNG",
+                "type": "png"
+            },
+            {
                 "file": "images/update.png",
                 "name": "IMAGES_UPDATE_PNG",
                 "type": "png"
